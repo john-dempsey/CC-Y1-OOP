@@ -7,11 +7,13 @@ class FormValidator extends Validator {
 
     clearErrors(form) {
         let nameError = form.querySelector("#name_error");
+        let ageError = form.querySelector("#age_error");
         let categoryError = form.querySelector("#category_error");
         let experienceError = form.querySelector("#experience_error");
         let languagesError = form.querySelector("#languages_error");
         
         nameError.innerHTML = "";
+        ageError.innerHTML = "";
         categoryError.innerHTML = "";
         experienceError.innerHTML = "";
         languagesError.innerHTML = "";
