@@ -1,12 +1,33 @@
 class Validator {
     constructor() {}
 
+    clearErrors(form) {
+        let nameError = form.querySelector("#name_error");
+        let categoryError = form.querySelector("#category_error");
+        let experienceError = form.querySelector("#experience_error");
+        let languagesError = form.querySelector("#languages_error");
+        
+        nameError.innerHTML = "";
+        categoryError.innerHTML = "";
+        experienceError.innerHTML = "";
+        languagesError.innerHTML = "";
+    }
+
+    displayErrors(errors) {
+        for (let i = 0; i != errors.length; i++) {
+            let error = errors[i];
+            error.field.innerHTML = error.message;
+        }
+    }
+
     validate(form) {
+        let errors = [];
+
         let nameField = form.querySelector("#name");
         let categoryInput = form.querySelector("#category");
         let experienceBtns = form.querySelectorAll("[name=experience]");
         let languageBtns = form.querySelectorAll("[name='languages[]']");
-        
+
         let nameError = form.querySelector("#name_error");
         let categoryError = form.querySelector("#category_error");
         let experienceError = form.querySelector("#experience_error");
@@ -18,18 +39,21 @@ class Validator {
             errorField.innerHTML = errorMessage;
             errorExists = true;
         }
-        nameError.innerHTML = "";
-        categoryError.innerHTML = "";
-        experienceError.innerHTML = "";
-        languagesError.innerHTML = "";
+
         errorExists = false;
     
         if (nameField.value === "") {
-            showError(nameError, "Name is required");
+            errors.push({
+                field: nameError,
+                message: "Name is required"
+            });
         }
     
         if (categoryInput.value === "") {
-            showError(categoryError, "Category is required");
+            errors.push({
+                field: categoryError,
+                message: "Category is required"
+            });
         }
     
         let expSelected = false;
@@ -41,7 +65,10 @@ class Validator {
             }
         }
         if (!expSelected) {
-            showError(experienceError, "Experience is required");
+            errors.push({
+                field: experienceError,
+                message: "Experience is required"
+            });
         }
     
         let minLang = 1;
@@ -54,10 +81,13 @@ class Validator {
             }
         }
         if (countLang < minLang || countLang > maxLang) {
-            showError(languagesError, "Choose one or two languages");
+            errors.push({
+                field: languagesError,
+                message: "Choose one or two languages"
+            });
         }
 
-        return errorExists;
+        return errors;
     }
 }
 
@@ -66,14 +96,17 @@ function onClick(e) {
 
     let commentForm = document.getElementById("comment_form");
     let validator = new Validator();
-    let errorExists = validator.validate(commentForm);
+    validator.clearErrors(commentForm);
+    let errors = validator.validate(commentForm);
 
     // if there was no errors then submit the form
-    if (!errorExists) {
+    if (!errors.length === 0) {
         commentForm.submit();
     }
+    else {
+        validator.displayErrors(errors);
+    }
 }
-
 
 let submitBtn = document.getElementById("submit_btn");   
 submitBtn.addEventListener("click", onClick);
