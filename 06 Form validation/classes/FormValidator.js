@@ -62,7 +62,7 @@ class FormValidator extends Validator {
         }
         else if (!this.min(ageField, 0) || !this.max(ageField, 120)) {
             errors.push({
-                field: nameError,
+                field: ageError,
                 message: "Age must be between 0 and 120"
             });
         }
