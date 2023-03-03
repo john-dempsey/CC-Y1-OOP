@@ -46,6 +46,23 @@ class Validator {
     max(field, maxValue) {
         return this.numeric(field) && parseFloat(field.value) <= maxValue;
     }
+
+    isSubset(a, b) {
+        let results = [];
+        for (let i = 0; i != a.length; i++) {
+            let val = a[i];
+            
+            results.push(b.includes(val));
+        }
+        let result = true;
+        for (let i = 0; i != results.length; i++) {
+            if (results[i] === false) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
 }
 
 export default Validator;

@@ -73,6 +73,17 @@ class FormValidator extends Validator {
                 message: "Category is required"
             });
         }
+        else {
+            let options = categoryInput.querySelectorAll('option');
+            let optionValues = Array.from(options).map(option => option.value);
+            let selectedOption = categoryInput.querySelector('option:checked');
+            if (!this.isSubset([selectedOption.value], optionValues)) {
+                errors.push({
+                    field: categoryError,
+                    message: "Invalid category"
+                });
+            };
+        }
     
         if (!this.minChecked(experienceBtns, 1)) {
             errors.push({
@@ -80,12 +91,33 @@ class FormValidator extends Validator {
                 message: "Experience is required"
             });
         }
+        else {
+            let optionValues = Array.from(experienceBtns).map(option => option.value);
+            let selectedOption = form.querySelector('[name=experience]:checked');
+            if (!this.isSubset([selectedOption.value], optionValues)) {
+                errors.push({
+                    field: experienceError,
+                    message: "Invalid experience"
+                });
+            };
+        }
     
         if (!this.minChecked(languageBtns, 1) || !this.maxChecked(languageBtns, 2)) {
             errors.push({
                 field: languagesError,
                 message: "Choose one or two languages"
             });
+        }
+        else {
+            let optionValues = Array.from(languageBtns).map(option => option.value);
+            let selectedOptions = form.querySelectorAll("[name='languages[]']:checked");
+            let selectedValues = Array.from(selectedOptions).map(option => option.value);
+            if (!this.isSubset(selectedValues, optionValues)) {
+                errors.push({
+                    field: languagesError,
+                    message: "Invalid language(s)"
+                });
+            };
         }
 
         return errors;
